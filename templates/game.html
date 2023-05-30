@@ -1,0 +1,79 @@
+<!-- game.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Magic The Gathering Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Choose your favorite Magic The Gathering card!</h1>
+        <div class="card-images">
+            <form id="game-form" method="POST">
+              {% for card_name, card_image, card_set, card_rarity in card_images %}
+                  <button class="card-button" type="submit" name="selected" value="{{ card_image }}">
+                      <img src="{{ card_image }}" alt="{{ card_name }}">
+                  </button>
+              {% endfor %}
+            </form>
+        </div>
+        <h2>Selected Images:</h2>
+        <ul class="card-list">
+          {% for name, image, set, rarity in selected_images %}
+              <li class="card-name" data-image="{{ image }}">{{ name }} - {{ set }} - {{ rarity }}</li>
+          {% endfor %}
+        </ul>
+        <h2>Unselected Images:</h2>
+        <ul class="card-list">
+          {% for name, image, set, rarity in unselected_images %}
+              <li class="card-name" data-image="{{ image }}">{{ name }} - {{ set }} - {{ rarity }}</li>
+          {% endfor %}
+        </ul>
+        <a href="{{ url_for('summary') }}" class="btn btn-primary">Summary</a>
+        <form action="{{ url_for('clear_session') }}" method="post">
+            <button type="submit" class="btn">Clear Session</button>
+        </form>
+        <a href="{{ url_for('home') }}" class="btn">Go Back to Home</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $('.card-button').hover(function() {
+                $(this).find('img').css({
+                    'transform': 'scale(1.05)',
+                    'transition': 'transform 0.3s'
+                });
+            }, function() {
+                $(this).find('img').css({
+                    'transform': 'scale(1)',
+                    'transition': 'transform 0.3s'
+                });
+            });
+
+            $('.card-name').hover(function() {
+                const cardImage = $(this).data('image');
+                const cardImageElement = $('<img>').attr('src', cardImage).addClass('hover-image');
+                $('body').append(cardImageElement);
+                $('.hover-image').css('left', '60%').fadeIn(200);
+                $(this).css({
+                    'font-weight': 'bold',
+                    'transition': 'font-weight 0.5s',
+                    'font-size': '2em',
+                    'transition': 'font-size 0.5s'
+                });
+            }, function() {
+                $('.hover-image').fadeOut(200, function() {
+                    $(this).remove();
+                });
+                $(this).css({
+                    'font-weight': 'normal',
+                    'transition': 'font-weight 0.5s',
+                    'font-size': '1em',
+                    'transition': 'font-size 0.5s'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

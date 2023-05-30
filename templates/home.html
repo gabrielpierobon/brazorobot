@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Magic The Gathering Game!</h1>
+        <p>Select your favorite card from the pairs presented to you. When you're done, you'll get a summary of your selected and unselected cards. You'll also be able to download a csv or xlsx file with your session</p>
+        <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
+    </div>
+</body>
+</html>
