@@ -6,8 +6,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Magic The Gathering Game!</h1>
-        <p>Select your favorite card from the pairs presented to you. When you're done, you'll get a summary of your selected and unselected cards. You'll also be able to download a csv or xlsx file with your session</p>
+      <div class="logo">
+          <img class="logo-image" src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
+      </div>
+        <h1>BRAZOROBOT LIFE</h1>
+        <p class="intro-paragraph">Welcome to the site where I publish anything I want about anything I like ^_^</p>
+        <p class="intro-paragraph">Want to contact me? Send me an email to brazorobotmtg@outlook.com</p>
         <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
 
         <h2>Blog Posts</h2>
@@ -23,8 +27,6 @@
                     {% if post.video %}
                         <div class="video-container">
                             <iframe
-                                width="560"
-                                height="315"
                                 src="{{ post.video }}"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -35,7 +37,6 @@
                 </div>
             {% endfor %}
         </div>
-
     </div>
 </body>
 </html>
