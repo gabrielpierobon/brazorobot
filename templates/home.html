@@ -19,7 +19,7 @@
             {% for post in blog_posts %}
                 <div class="blog-post">
                     <h3>{{ post.title }}</h3>
-                    <p class="date">{{ post.date }}</p>
+                    <p class="date">{{ post.date }} | ID: {{ post.id }}</p>
                     {% if post.image %}
                         <img src="{{ post.image }}" alt="{{ post.title }}">
                     {% endif %}

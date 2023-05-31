@@ -152,29 +152,47 @@ h1 {
     animation: rainbow 5s linear infinite;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
     .blog-post p {
-        font-size: 60%;
+        font-size: 75 %;
     }
     .blog-post h3 {
-        font-size: 100%;
+        font-size: 150%;
+    }
+}
+
+@media screen and (min-width: 300px) {
+    .blog-post {
+        width: 300px;
+    }
+}
+
+@media screen and (min-width: 400px) {
+    .blog-post {
+        width: 400px;
     }
 }
 
 @media screen and (min-width: 600px) {
-    .container {
-        max-width: 80%;
+    .blog-post {
+        width: 550px;
     }
 }
 
 @media screen and (min-width: 900px) {
-    .container {
-        max-width: 95%;
+    .blog-post {
+        width: 900px;
     }
 }
 
 @media screen and (min-width: 1200px) {
     .blog-post {
-        max-width: 45%;
+        width: 1200px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .blog-post {
+        width: 1600`px;
     }
 }

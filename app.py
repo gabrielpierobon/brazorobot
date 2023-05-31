@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify, abort
 import requests
 import csv
 import pandas as pd
@@ -9,6 +9,8 @@ import os
 from dotenv import load_dotenv
 from io import BytesIO
 import json
+import secrets
+from flask_table import Table, Col
 
 load_dotenv()
 
@@ -149,6 +151,7 @@ def new_post():
         if form.password.data != valid_password:
             return "Invalid password", 401
         new_post = {
+            "id": secrets.token_hex(3),  # Generate a random 6-character hex string
             "title": form.title.data,
             "date": form.date.data,
             "image": form.image.data or None,
@@ -159,9 +162,74 @@ def new_post():
             blog_posts = json.load(file)
             blog_posts.append(new_post)
             file.seek(0)
+            file.truncate()  # Necessary to avoid corrupting the JSON file
             json.dump(blog_posts, file)
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
+
+class LoginForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        print(form.password.data)
+        print(valid_password)
+        if form.password.data != valid_password:
+            return "Unauthorized", 401
+        else:
+            session['logged_in'] = True
+            return redirect(url_for('posts'))
+    return render_template('login.html', form=form)
+
+# Declare your table
+class ItemTable(Table):
+    id = Col('Id')
+    title = Col('Title')
+    date = Col('Date')
+    delete = Col('Delete')
+
+# Get some objects
+class Item(object):
+    def __init__(self, id, title, date):
+        self.id = id
+        self.title = title
+        self.date = date
+
+def get_items():
+    with open('blog_posts.json') as f:
+        data = json.load(f)
+    items = []
+    for entry in data:
+        id = entry["id"]
+        title = entry["title"]
+        date = entry["date"]
+        items.append(Item(id, title, date))
+    return items
+
+@app.route('/posts', methods=['GET'])
+def posts():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    else:
+        items = get_items()
+        # Populate the table
+        table = ItemTable(items)
+        return render_template('posts.html', table=table)
+
+@app.route('/delete_post/<post_id>', methods=['GET'])
+def delete_post(post_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    else:
+        with open('blog_posts.json', 'r') as f:
+            data = json.load(f)
+        data = [post for post in data if post['id'] != post_id]
+        with open('blog_posts.json', 'w') as f:
+            json.dump(data, f)
+        return redirect(url_for('posts'))
 
 if __name__ == '__main__':
     app.run(debug=False)

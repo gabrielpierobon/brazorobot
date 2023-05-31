@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Login</title>
+{% if error %}
+<p class=error><strong>Error:</strong> {{ error }}
+{% endif %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <dl>
+        <dt>Password:
+        <dd>{{ form.password() }}
+    </dl>
+    <p>{{ form.submit() }}
+</form>
