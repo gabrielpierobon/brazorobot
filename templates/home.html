@@ -11,25 +11,30 @@
         <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
 
         <h2>Blog Posts</h2>
-        {% for post in blog_posts %}
-            <div class="blog-post">
-                <h3>{{ post.title }}</h3>
-                <p>{{ post.date }}</p>
-                <p>{{ post.text }}</p>
-                {% if post.video %}
-                    <div class="video-container">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="{{ post.video }}"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
+        <div class="blog-grid">
+            {% for post in blog_posts %}
+                <div class="blog-post">
+                    <h3>{{ post.title }}</h3>
+                    <p class="date">{{ post.date }}</p>
+                    {% if post.image %}
+                        <img src="{{ post.image }}" alt="{{ post.title }}">
+                    {% endif %}
+                    <p>{{ post.text }}</p>
+                    {% if post.video %}
+                        <div class="video-container">
+                            <iframe
+                                width="560"
+                                height="315"
+                                src="{{ post.video }}"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
 
     </div>
 </body>

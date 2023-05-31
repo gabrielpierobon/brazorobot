@@ -1,26 +1,35 @@
-body {
+:root {
+    --main-bg-color: #fafafa;
+    --main-font: 'Roboto', sans-serif;
+    --main-color: #333;
+    --light-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    --hover-bg-color: #0056b3;
+    --btn-bg-color: #007bff;
+}
+
+body, .container {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
     line-height: 1.5;
-    color: #333;
-    background-color: #fafafa;  /* add a light background */
-      font-family: 'Roboto', sans-serif;  /* specify a font */
+    color: var(--main-color);
+    background-color: var(--main-bg-color);
+    font-family: var(--main-font);
 }
 
 .container {
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    max-width: 90%;
     width: 100%;
     padding: 20px;
     flex-grow: 1;
+    max-width: 90%;
 }
 
 @media screen and (min-width: 600px) {
@@ -57,7 +66,7 @@ body {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: var(--btn-bg-color);
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -67,7 +76,7 @@ body {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: var(--hover-bg-color);
 }
 
 .hover-image {
@@ -80,20 +89,48 @@ body {
     background-color: #fff;
     padding: 5px;
     z-index: 100;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--light-shadow);
     display: none;
+}
+
+.blog-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .blog-post {
     background-color: #fff;
     padding: 20px;
-    padding-top: 0;  /* Remove padding at the top */
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    margin: 20px 10px;
+    box-shadow: var(--light-shadow);
     border-radius: 10px;
-    width: 95%;  /* take up most of the width */
-    max-width: 1400px;  /* limit the maximum width */
-    margin: 20px auto;  /* center the blog post */
+    width: 100%;
+    max-width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+    .blog-post {
+        max-width: 90%;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .blog-post {
+        max-width: 90%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .blog-post {
+        max-width: 90%;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .blog-post {
+        max-width: 45%;
+    }
 }
 
 .blog-post .date {
@@ -102,15 +139,19 @@ body {
     margin-bottom: 15px;
 }
 
-.blog-post p {
+.blog-post p, .blog-post h3 {
     text-align: left;
 }
 
 .blog-post h3 {
-    font-size: 3em;  /* 3 times the base font size */
-    text-align: left;
-    margin-top: 0;  /* Remove margin at the top */
-    margin-bottom: 5px;
+    font-size: 3em;
+    margin: 0 0 5px 0;  /* Remove margin at the top */
+}
+
+.blog-post img {
+    max-height: 400px;
+    width: auto;
+    height: auto;
 }
 
 .video-container {
