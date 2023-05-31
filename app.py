@@ -1,13 +1,32 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 import requests
 import csv
 import pandas as pd
-from flask import make_response
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField
+from wtforms.validators import DataRequired
+import os
+from dotenv import load_dotenv
 from io import BytesIO
 import json
 
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+app.secret_key = os.getenv('SECRET_KEY')
+app.config['WTF_CSRF_SECRET_KEY'] = os.getenv('WTF_CSRF_SECRET_KEY')
+
+# Retrieve the valid password from environment variable
+valid_password = os.getenv('PASSWORD')
+
+class PostForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired()])
+    date = StringField('Date', validators=[DataRequired()])
+    image = StringField('Image')
+    text = TextAreaField('Text', validators=[DataRequired()])
+    video = StringField('Video')
+    submit = SubmitField('Submit')
 
 def get_card_images():
     url = 'https://api.scryfall.com/cards/random'
@@ -123,9 +142,26 @@ def download_xls():
 
     return resp
 
-
-
-
+@app.route('/new_post', methods=['GET', 'POST'])
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        if form.password.data != valid_password:
+            return "Invalid password", 401
+        new_post = {
+            "title": form.title.data,
+            "date": form.date.data,
+            "image": form.image.data or None,
+            "text": form.text.data,
+            "video": form.video.data or None,
+        }
+        with open('blog_posts.json', 'r+') as file:
+            blog_posts = json.load(file)
+            blog_posts.append(new_post)
+            file.seek(0)
+            json.dump(blog_posts, file)
+        return redirect(url_for('home'))
+    return render_template('new_post.html', form=form)
 
 if __name__ == '__main__':
     app.run(debug=False)

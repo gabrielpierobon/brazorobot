@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        .wide-form {
+            width: 95%;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Add 'wide-form' class to form -->
+        <form method="POST" class="needs-validation wide-form" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {{ form.password(class="form-control", placeholder="Enter Password") }}
+            </div>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {{ form.title(class="form-control", placeholder="Enter Title") }}
+            </div>
+            <div class="form-group">
+                {{ form.date.label(class="form-control-label") }}
+                {{ form.date(class="form-control", placeholder="Enter Date") }}
+            </div>
+            <div class="form-group">
+                {{ form.image.label(class="form-control-label") }}
+                {{ form.image(class="form-control", placeholder="Enter Image URL") }}
+            </div>
+            <div class="form-group">
+                {{ form.text.label(class="form-control-label") }}
+                {{ form.text(class="form-control", placeholder="Enter Text", rows=5) }}
+            </div>
+            <div class="form-group">
+                {{ form.video.label(class="form-control-label") }}
+                {{ form.video(class="form-control", placeholder="Enter Video URL") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+    <!-- Optional Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
