@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 from flask import make_response
 from io import BytesIO
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -34,6 +35,12 @@ def get_card_images():
 
     return None
 
+
+@app.route('/', methods=['GET'])
+def home():
+    with open('blog_posts.json', 'r') as file:
+        blog_posts = json.load(file)
+    return render_template('home.html', blog_posts=blog_posts)
 
 
 @app.route('/game', methods=['GET', 'POST'])
@@ -66,12 +73,6 @@ def game():
                            card_images=session.get('card_images', []),
                            selected_images=session.get('selected_images', []),
                            unselected_images=session.get('unselected_images', []))
-
-
-
-@app.route('/', methods=['GET'])
-def home():
-    return render_template('home.html')
 
 
 @app.route('/summary')

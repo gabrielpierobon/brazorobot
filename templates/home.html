@@ -9,6 +9,28 @@
         <h1>Welcome to the Magic The Gathering Game!</h1>
         <p>Select your favorite card from the pairs presented to you. When you're done, you'll get a summary of your selected and unselected cards. You'll also be able to download a csv or xlsx file with your session</p>
         <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
+
+        <h2>Blog Posts</h2>
+        {% for post in blog_posts %}
+            <div class="blog-post">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.date }}</p>
+                <p>{{ post.text }}</p>
+                {% if post.video %}
+                    <div class="video-container">
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="{{ post.video }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
     </div>
 </body>
 </html>

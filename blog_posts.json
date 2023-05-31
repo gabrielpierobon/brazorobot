@@ -1,0 +1,17 @@
+[   {
+        "title": "prueba",
+        "date": "2023-06-01",
+        "text": "esto es una prueba"
+      },
+    {
+        "title": "First blog post",
+        "date": "2023-05-31",
+        "text": "Welcome to the ever-expanding universe of Magic: The Gathering, the world's premier trading card game. In this intricate universe, you take on the role of a powerful Planeswalker, summoning colossal beasts, casting potent spells, and outwitting opponents in a dynamic game of strategy. Each match transports you to vibrant planes of existence, each teeming with unique creatures, spells, and enchantments. Magic isn't just a game; it's an immersive, constantly evolving adventure that challenges the mind and sparks the imagination. Whether you're a veteran player, a collector of stunning art cards, or a newcomer just starting your journey, the MTG multiverse always has something new and exciting to offer. So, shuffle your deck, draw your starting hand, and step into the infinite possibilities of Magic: The Gathering."
+    },
+    {
+        "title": "Second blog post",
+        "date": "2023-06-01",
+        "video": "https://www.youtube.com/embed/DxFHOQKEUUM",
+        "text": "This is the text for the second blog post..."
+    }
+]
