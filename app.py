@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify, abort
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
 import requests
 import csv
 import pandas as pd
@@ -17,8 +17,6 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['WTF_CSRF_SECRET_KEY'] = os.getenv('WTF_CSRF_SECRET_KEY')
-
-# Retrieve the valid password from environment variable
 valid_password = os.getenv('PASSWORD')
 
 class PostForm(FlaskForm):
@@ -30,39 +28,32 @@ class PostForm(FlaskForm):
     video = StringField('Video')
     submit = SubmitField('Submit')
 
-def get_card_images():
-    url = 'https://api.scryfall.com/cards/random'
+def request_card_data(url):
     response = requests.get(url)
     if response.status_code == 200:
-        card_data_1 = response.json()
-        if 'image_uris' in card_data_1:
-            card_image_1 = card_data_1['image_uris']['normal']
-            card_name_1 = card_data_1['name']
-            card_set_1 = card_data_1['set_name']
-            card_rarity_1 = card_data_1['rarity']
-
-            response = requests.get(url)
-            if response.status_code == 200:
-                card_data_2 = response.json()
-                if 'image_uris' in card_data_2:
-                    card_image_2 = card_data_2['image_uris']['normal']
-                    card_name_2 = card_data_2['name']
-                    card_set_2 = card_data_2['set_name']
-                    card_rarity_2 = card_data_2['rarity']
-
-                    card_images_and_names = [(card_name_1, card_image_1, card_set_1, card_rarity_1),
-                                             (card_name_2, card_image_2, card_set_2, card_rarity_2)]
-                    return card_images_and_names
-
+        card_data = response.json()
+        if 'image_uris' in card_data:
+            return card_data
     return None
 
+def get_card_images():
+    url = 'https://api.scryfall.com/cards/random'
+    card_data_1 = request_card_data(url)
+    card_data_2 = request_card_data(url)
+
+    if card_data_1 and card_data_2:
+        card_images_and_names = [
+            (card_data_1['name'], card_data_1['image_uris']['normal'], card_data_1['set_name'], card_data_1['rarity']),
+            (card_data_2['name'], card_data_2['image_uris']['normal'], card_data_2['set_name'], card_data_2['rarity'])
+        ]
+        return card_images_and_names
+    return None
 
 @app.route('/', methods=['GET'])
 def home():
     with open('blog_posts.json', 'r') as file:
         blog_posts = json.load(file)
-    return render_template('home.html', blog_posts=blog_posts)
-
+    return render_template('home.html', blog_posts=list(reversed(blog_posts))[:15])
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
@@ -95,19 +86,16 @@ def game():
                            selected_images=session.get('selected_images', []),
                            unselected_images=session.get('unselected_images', []))
 
-
 @app.route('/summary')
 def summary():
     return render_template('summary.html',
                            selected_images=session.get('selected_images', []),
                            unselected_images=session.get('unselected_images', []))
 
-
 @app.route('/clear_session', methods=['POST'])
 def clear_session():
     session.clear()
     return redirect(url_for('game'))
-
 
 @app.route('/download/csv', methods=['GET'])
 def download_csv():
@@ -123,7 +111,6 @@ def download_csv():
     response.headers["Content-type"] = "text/csv"
 
     return response
-
 
 @app.route('/download/xls')
 def download_xls():
@@ -149,9 +136,9 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         if form.password.data != valid_password:
-            return "Invalid password", 401
+            abort(401)
         new_post = {
-            "id": secrets.token_hex(3),  # Generate a random 6-character hex string
+            "id": secrets.token_hex(3),
             "title": form.title.data,
             "date": form.date.data,
             "image": form.image.data or None,
@@ -162,7 +149,7 @@ def new_post():
             blog_posts = json.load(file)
             blog_posts.append(new_post)
             file.seek(0)
-            file.truncate()  # Necessary to avoid corrupting the JSON file
+            file.truncate()
             json.dump(blog_posts, file)
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
@@ -175,13 +162,10 @@ class LoginForm(FlaskForm):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print(form.password.data)
-        print(valid_password)
         if form.password.data != valid_password:
-            return "Unauthorized", 401
-        else:
-            session['logged_in'] = True
-            return redirect(url_for('posts'))
+            abort(401)
+        session['logged_in'] = True
+        return redirect(url_for('posts'))
     return render_template('login.html', form=form)
 
 # Declare your table
@@ -230,6 +214,16 @@ def delete_post(post_id):
         with open('blog_posts.json', 'w') as f:
             json.dump(data, f)
         return redirect(url_for('posts'))
+
+@app.route('/full_post/<post_id>', methods=['GET'])
+def full_post(post_id):
+    with open('blog_posts.json', 'r') as file:
+        blog_posts = json.load(file)
+    for post in blog_posts:
+        if post['id'] == post_id:
+            return render_template('full_post.html', post=post)
+    abort(404)
+
 
 if __name__ == '__main__':
     app.run(debug=False)

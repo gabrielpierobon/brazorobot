@@ -12,13 +12,13 @@
         <h2 class="text-center">Selected Images:</h2>
         <ul class="card-list text-center">
             {% for name, image, set, rarity in selected_images %}
-            <li class="card-name" data-image="{{ image }}">{{ name }} - {{ set }} - {{ rarity }}</li>
+            <li class="card-name" data-image="{{ image }}">{{ name }}</li>
             {% endfor %}
         </ul>
         <h2 class="text-center">Unselected Images:</h2>
         <ul class="card-list text-center">
             {% for name, image, set, rarity in unselected_images %}
-            <li class="card-name" data-image="{{ image }}">{{ name }} - {{ set }} - {{ rarity }}</li>
+            <li class="card-name" data-image="{{ image }}">{{ name }}</li>
             {% endfor %}
         </ul>
         <div class="text-center">

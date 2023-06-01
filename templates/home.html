@@ -13,17 +13,15 @@
         <p class="intro-paragraph">Welcome to the site where I publish anything I want about anything I like ^_^</p>
         <p class="intro-paragraph">Want to contact me? Send me an email to brazorobotmtg@outlook.com</p>
         <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
-
-        <h2>Blog Posts</h2>
         <div class="blog-grid">
             {% for post in blog_posts %}
                 <div class="blog-post">
-                    <h3>{{ post.title }}</h3>
+                  <h3><a href="{{ url_for('full_post', post_id=post.id) }}">{{ post.title }}</a></h3>
                     <p class="date">{{ post.date }} | ID: {{ post.id }}</p>
                     {% if post.image %}
                         <img src="{{ post.image }}" alt="{{ post.title }}">
                     {% endif %}
-                    <p>{{ post.text }}</p>
+                    <p>{{ post.text[:500] }}{% if post.text|length > 500 %}...{% endif %}</p>
                     {% if post.video %}
                         <div class="video-container">
                             <iframe
