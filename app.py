@@ -11,6 +11,7 @@ from io import BytesIO
 import json
 import secrets
 from flask_table import Table, Col
+import markdown2
 
 load_dotenv()
 
@@ -142,7 +143,7 @@ def new_post():
             "title": form.title.data,
             "date": form.date.data,
             "image": form.image.data or None,
-            "text": form.text.data,
+            "text": markdown2.markdown(form.text.data),
             "video": form.video.data or None,
         }
         with open('blog_posts.json', 'r+') as file:
@@ -153,6 +154,7 @@ def new_post():
             json.dump(blog_posts, file)
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
+
 
 class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])

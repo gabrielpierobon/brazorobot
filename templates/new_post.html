@@ -3,6 +3,7 @@
 <head>
     <title>New Post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
     <!-- Add Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
@@ -38,7 +39,7 @@
             </div>
             <div class="form-group">
                 {{ form.text.label(class="form-control-label") }}
-                {{ form.text(class="form-control", placeholder="Enter Text", rows=5) }}
+                {{ form.text(class="form-control", placeholder="Enter Text (Markdown supported)", rows=5) }}
             </div>
             <div class="form-group">
                 {{ form.video.label(class="form-control-label") }}
@@ -48,7 +49,16 @@
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
+         
+        <h3>Markdown Syntax:</h3>
+        <p><strong>Headers:</strong> Use '#' for headers. Example: '# Header1', '## Header2'.</p>
+        <p><strong>Bold:</strong> Use '**' to bold text. Example: '**bold text**'.</p>
+        <p><strong>Italic:</strong> Use '_' to italicize text. Example: '_italic text_'.</p>
+        <p><strong>Bullet Points:</strong> Use '*' or '-' for bullet points.</p>
+        <p><strong>Links:</strong> Format links like this: '[link text](http://url.com)'.</p>
+        <p><strong>Images:</strong> Format images like this: '![alt text](http://url.com/image.jpg)'.</p>
     </div>
+
     <!-- Optional Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
