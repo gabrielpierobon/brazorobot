@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New Post</title>
+    <title>Edit Post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
-    <!-- Add Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
     <style>
         .wide-form {
             width: 95%;
@@ -18,8 +15,7 @@
 </head>
 <body>
     <div class="container full-post-content">
-        <!-- Add 'wide-form' class to form -->
-        <form method="POST" class="needs-validation wide-form" novalidate>
+      <form method="POST" class="needs-validation wide-form" novalidate enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.password.label(class="form-control-label") }}
@@ -52,25 +48,21 @@
             <button id="preview-btn" class="btn btn-secondary">Preview Text</button>
             <div id="markdown-preview"></div>
             </div>
-          </form>
+        </form>
     </div>
 
     <div class="container full-post-content">
-
-    <h3>Markdown Syntax:</h3>
-    <p><strong>Headers:</strong> Use '#' for headers. Example: '# Header1', '## Header2'.</p>
-    <p><strong>Bold:</strong> Use '**' to bold text. Example: '**bold text**'.</p>
-    <p><strong>Italic:</strong> Use '_' to italicize text. Example: '_italic text_'.</p>
-    <p><strong>Bullet Points:</strong> Use '*' or '-' for bullet points.</p>
-    <p><strong>Links:</strong> Format links like this: '[link text](http://url.com)'.</p>
-    <p><strong>Images:</strong> Format images like this: '![alt text](http://url.com/image.jpg)'.</p>
+        <h3>Markdown Syntax:</h3>
+        <p><strong>Headers:</strong> Use '#' for headers. Example: '# Header1', '## Header2'.</p>
+        <p><strong>Bold:</strong> Use '**' to bold text. Example: '**bold text**'.</p>
+        <p><strong>Italic:</strong> Use '_' to italicize text. Example: '_italic text_'.</p>
+        <p><strong>Bullet Points:</strong> Use '*' or '-' for bullet points.</p>
+        <p><strong>Links:</strong> Format links like this: '[link text](http://url.com)'.</p>
+        <p><strong>Images:</strong> Format images like this: '![alt text](http://url.com/image.jpg)'.</p>
     </div>
 
-    <!-- Optional Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <!-- Optional Bootstrap JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     $(document).ready(function(){
@@ -90,7 +82,5 @@
       });
     });
     </script>
-
-
 </body>
 </html>

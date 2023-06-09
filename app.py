@@ -155,6 +155,53 @@ def new_post():
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
 
+@app.route('/preview', methods=['POST'])
+def preview():
+    text = request.form.get('text', '')
+    html = markdown2.markdown(text)
+    return html
+
+@app.route('/edit_post/<post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    # Find the post that matches the post_id
+    with open('blog_posts.json', 'r') as file:
+        blog_posts = json.load(file)
+        post = next((post for post in blog_posts if post['id'] == post_id), None)
+
+    if post is None:
+        abort(404) # If post with such id doesn't exist, return 404 error
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        if form.password.data != valid_password:
+            abort(401)
+        # If the form is valid, update the post data
+        post['title'] = form.title.data
+        post['date'] = form.date.data
+        post['image'] = form.image.data
+        post['text'] = markdown2.markdown(form.text.data)
+        post['video'] = form.video.data or None
+        # Write the updated data back to the file
+        with open('blog_posts.json', 'w') as file:
+            json.dump(blog_posts, file)
+        return redirect(url_for('home'))
+
+    if request.method == 'GET':
+        # If the method is GET, populate the form with the current post data
+        form.password.data = valid_password
+        form.title.data = post['title']
+        form.date.data = post['date']
+        form.image.data = post['image']
+        form.text.data = post['text']
+        form.video.data = post['video']
+
+    elif request.method == 'POST':
+        print(form.errors) # print form errors when the form is not valid
+
+    return render_template('edit_post.html', form=form)
+
+
 
 class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])

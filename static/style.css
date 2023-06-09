@@ -174,6 +174,10 @@ h1 {
     animation: rainbow 5s linear infinite;
 }
 
+p {
+    color: #d3d3d3; /* This is light gray */
+}
+
 @media screen and (max-width: 900px) {
     .blog-post p {
         font-size: 75 %;
@@ -244,4 +248,8 @@ a {
 
 a:visited {
     color: inherit;
+}
+
+.full-post-content {
+    text-align: left !important;
 }

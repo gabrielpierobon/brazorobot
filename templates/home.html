@@ -13,7 +13,7 @@
         <h1>BRAZOROBOT LIFE</h1>
         <p class="intro-paragraph">Want to contact me? Send me an email to brazorobotmtg@outlook.com</p>
         <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
-        <div class="blog-grid">
+        <div class="blog-grid  full-post-content">
             {% for post in blog_posts %}
                 <div class="blog-post">
                     <a href="{{ url_for('full_post', post_id=post.id) }}">
