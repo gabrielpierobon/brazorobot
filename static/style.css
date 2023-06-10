@@ -130,6 +130,10 @@ body, .container {
   margin-bottom: 15px;
 }
 
+.date {
+  font-size: 14px;
+}
+
 .blog-post p,
 .blog-post h3 {
   text-align: left;
@@ -183,6 +187,9 @@ p {
   color: #d3d3d3;
 }
 
+
+
+
 @media screen and (max-width: 900px) {
   .blog-post p {
     font-size: 75%;
@@ -197,7 +204,17 @@ p {
     width: 300px;
   }
   h1 {
-    font-size: 2em;
+    font-size: 3em;
+  }
+  .intro-paragraph {
+    font-size: 1.5em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 30px;
   }
 }
 
@@ -206,7 +223,17 @@ p {
     width: 400px;
   }
   h1 {
-    font-size: 2em;
+    font-size: 3em;
+  }
+  .intro-paragraph {
+    font-size: 1.5em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 40px;
   }
 }
 
@@ -215,7 +242,17 @@ p {
     width: 550px;
   }
   h1 {
-    font-size: 2em;
+    font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1.5em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 50px;
   }
 }
 
@@ -224,7 +261,59 @@ p {
     width: 900px;
   }
   h1 {
-    font-size: 2em;
+    font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1.5em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 50px;
+  }
+}
+
+@media screen and (min-width: 950px) {
+  .blog-post {
+    width: 900px;
+  }
+  h1 {
+    font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1.5em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .btn-primary {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 70px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 50px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .blog-post {
+    width: 900px;
+  }
+  h1 {
+    font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 35px;
   }
 }
 
@@ -233,7 +322,17 @@ p {
     width: 1200px;
   }
   h1 {
-    font-size: 3em;
+    font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 14px;
   }
 }
 
@@ -243,6 +342,16 @@ p {
   }
   h1 {
     font-size: 4em;
+  }
+  .intro-paragraph {
+    font-size: 1em;
+  }
+  .btn {
+  padding: 15px 30px;  /* increased padding */
+  font-size: 30px;     /* increased font size */
+  }
+  .likePost {
+      font-size: 14px;
   }
 }
 
@@ -257,4 +366,22 @@ a:visited {
 
 .full-post-content {
   text-align: left !important;
+}
+
+.like-container {
+    margin-top: 10px;
+}
+
+.likePost {
+    background-color: transparent;
+    border: 1px solid #999;
+    border-radius: 4px;
+    color: #999;
+    cursor: pointer;
+    padding: 6px 12px;
+}
+
+.likePost:hover {
+    color: #555;
+    background-color: #999;
 }

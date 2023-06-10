@@ -4,26 +4,6 @@
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
-    <style>
-        .like-container {
-            margin-top: 10px;
-        }
-
-        .likePost {
-            background-color: transparent;
-            border: 1px solid #999;
-            border-radius: 4px;
-            color: #999;
-            font-size: 14px;
-            cursor: pointer;
-            padding: 6px 12px;
-        }
-
-        .likePost:hover {
-            color: #555;
-            background-color: #999;
-        }
-    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
