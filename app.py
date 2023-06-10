@@ -95,7 +95,7 @@ def summary():
 @app.route('/clear_session', methods=['POST'])
 def clear_session():
     session.clear()
-    return redirect(url_for('game'))
+    return redirect(url_for('home'))
 
 @app.route('/download/csv', methods=['GET'])
 def download_csv():
@@ -130,6 +130,112 @@ def download_xls():
     resp.headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
     return resp
+
+
+@app.route('/labeler', methods=['GET', 'POST'])
+def labeler():
+    categories = ["LOVE THIS CARD", "LOVE THIS ART", "INTERESTING CARD", "BUY THIS CARD",
+                  "CRAFT THIS CARD", "GOES IN MY DECK", "BREW WITH IT", "OTHER 1",
+                  "OTHER 2", "OTHER 3"]
+
+    if request.method == 'POST':
+        if 'card_data' in session:
+            rating = request.form.get('rating')
+            card_data = session['card_data']
+            card_data['rating'] = rating
+            card_data['labels'] = []
+            for cat in categories:
+                if cat in request.form:
+                    card_data['labels'].append(cat)
+            if 'cards' not in session:
+                session['cards'] = []
+            session['cards'].append(card_data)
+            session.pop('card_data', None)
+
+    if 'card_data' not in session or not session['card_data']:
+        card_data = request_card_data('https://api.scryfall.com/cards/random')
+        if card_data is None:
+            return redirect(url_for('home'))
+        card_data = {
+            'name': card_data['name'],
+            'image': card_data['image_uris']['normal'],
+            'set_name': card_data['set_name'],
+            'rarity': card_data['rarity'],
+            'labels': [],
+            'rating': None
+        }
+        session['card_data'] = card_data
+
+    return render_template('labeler.html',
+                           card_data=session.get('card_data', {}),
+                           cards=session.get('cards', []))
+
+
+@app.route('/download_2/csv', methods=['GET'])
+def download_2_csv():
+    cards = session.get('cards', [])
+    output = []
+    categories = ["LOVE THIS CARD", "LOVE THIS ART", "INTERESTING CARD", "BUY THIS CARD",
+                  "CRAFT THIS CARD", "GOES IN MY DECK", "BREW WITH IT", "OTHER 1",
+                  "OTHER 2", "OTHER 3", "Rating"]
+    output.append(['Card Name', 'Card Image URL', 'Set Name', 'Rarity'] + categories)
+
+    for card in cards:
+        row = [card['name'], card['image'], card['set_name'], card['rarity']]
+        labels = card.get('labels', [])
+        for cat in categories[:-1]:  # Exclude "Rating" from categories for this
+            row.append('X' if cat in labels else '')
+        row.append(card.get('rating', ''))
+        output.append(row)
+
+    output = [",".join(map(str, i)) for i in output]
+    output = "\n".join(output)
+
+    response = make_response(output)
+    response.headers["Content-Disposition"] = "attachment; filename=selected_cards.csv"
+    response.headers["Content-type"] = "text/csv"
+
+    return response
+
+
+@app.route('/download_2/xls')
+def download_2_xls():
+    cards = session.get('cards', [])
+    data = []
+    categories = ["LOVE THIS CARD", "LOVE THIS ART", "INTERESTING CARD", "BUY THIS CARD",
+                  "CRAFT THIS CARD", "GOES IN MY DECK", "BREW WITH IT", "OTHER 1",
+                  "OTHER 2", "OTHER 3", "Rating"]
+
+    for card in cards:
+        row = {
+            'Card Name': card['name'],
+            'Card Image URL': card['image'],
+            'Set Name': card['set_name'],
+            'Rarity': card['rarity']
+        }
+        labels = card.get('labels', [])
+        for cat in categories[:-1]:  # Exclude "Rating" from categories for this
+            row[cat] = 'X' if cat in labels else ''
+        row['Rating'] = card.get('rating', '')
+        data.append(row)
+
+    # Create DataFrame from selected images
+    df = pd.DataFrame(data)
+
+    # Create a BytesIO object, save the Excel file there
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.book.close()  # Close the xlsxwriter Workbook object, not the pd.ExcelWriter object
+    output.seek(0)
+
+    # Create a Flask response with the Excel file
+    resp = make_response(output.read())
+    resp.headers["Content-Disposition"] = "attachment; filename=export.xlsx"
+    resp.headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+    return resp
+
 
 @app.route('/new_post', methods=['GET', 'POST'])
 def new_post():

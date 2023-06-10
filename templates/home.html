@@ -28,8 +28,20 @@
             <img class="logo-image" src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
         </div>
         <h1>BRAZOROBOT LIFE</h1>
-        <p class="intro-paragraph">Want to contact me? Send me an email to brazorobotmtg@outlook.com</p>
-        <a href="{{ url_for('game') }}" class="btn btn-primary">Select a Card Game</a>
+        <div class="text-center">
+        <a href="https://www.youtube.com/@BrazorobotMTG">
+          <img class="home-logo" src="https://storage.googleapis.com/brazorobot/brazorobot_web/static/youtubelogo3.png" alt="Brazorobot Logo" width="200">
+        </a>
+        <a href="https://discord.gg/DVF23St7KN">
+          <img class="home-logo" src="https://storage.googleapis.com/brazorobot/brazorobot_web/static/discord.png" alt="Brazorobot Logo" width="200">
+        </a>
+        </div>
+        <p class="intro-paragraph">Want to contact me? Send me an email to <a href="mailto:brazorobotmtg@outlook.com">brazorobotmtg@outlook.com</a></p>
+        <div class="text-center">
+        <a href="{{ url_for('labeler') }}" class="btn btn-primary">Random Card Labeler</a>
+        <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">2 Random Card Selector</a> -->
+        <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">Corner Rounding Tool</a> -->
+        </div>
         <div class="blog-grid full-post-content">
             {% for post in blog_posts %}
                 <div class="blog-post">

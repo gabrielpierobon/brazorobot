@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Magic The Gathering Game</title>
+  <title>2 Random Card Selector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -31,11 +31,14 @@
               <li class="card-name" data-image="{{ image }}">{{ name }}</li>
           {% endfor %}
         </ul>
-        <a href="{{ url_for('summary') }}" class="btn btn-primary">Summary</a>
+        <div class="text-center">
+        <a href="{{ url_for('home') }}" class="btn">HOME</a>
+        <a href="{{ url_for('summary') }}" class="btn btn-primary">SESSION SUMMARY</a>
         <form action="{{ url_for('clear_session') }}" method="post">
-            <button type="submit" class="btn">Clear Session</button>
+            <button type="submit" class="btn">CLEAR SESSION</button>
         </form>
-        <a href="{{ url_for('home') }}" class="btn">Go Back to Home</a>
+
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

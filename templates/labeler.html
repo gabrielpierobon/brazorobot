@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Label Random Cards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .labels input[type="checkbox"] {
+            display: none; /* hide original checkbox */
+        }
+
+        .labels input[type="checkbox"] + label {
+            font-size: 35px; /* make text bigger */
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .labels input[type="checkbox"] + label:before {
+            content: "";
+            display: inline-block;
+            width: 35px; /* double the width */
+            height: 35px; /* double the height */
+            border: 2px solid white;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .labels input[type="checkbox"]:checked + label:before {
+            content: "✓";
+            text-align: center;
+            line-height: 35px;
+        }
+
+        .labels {
+            text-align: left;
+        }
+
+        select {
+            font-size: 20px;
+            padding: 10px;
+            margin-top: 30px;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Label Random Cards</h1>
+      <p class="intro-paragraph">Label random cards | Export your session to csv or xls | Clear Session to start over | Click the card to skip</p>
+      <div class="card-images">
+          <form id="labeler-form" method="POST">
+              <button class="card-button" type="submit">
+                  <img src="{{ card_data.image }}" alt="{{ card_data.name }}">
+              </button>
+          </form>
+          <form class="labels" method="POST">
+              <input type="checkbox" id="LOVE_THIS_CARD" name="LOVE THIS CARD">
+              <label for="LOVE_THIS_CARD">LOVE THIS CARD 😍</label><br>
+              <input type="checkbox" id="LOVE_THIS_ART" name="LOVE THIS ART">
+              <label for="LOVE_THIS_ART">LOVE THIS ART 🥰</label><br>
+              <input type="checkbox" id="INTERESTING_CARD" name="INTERESTING CARD">
+              <label for="INTERESTING_CARD">INTERESTING CARD 🤔</label><br>
+              <input type="checkbox" id="BUY_THIS_CARD" name="BUY THIS CARD">
+              <label for="BUY_THIS_CARD">BUY THIS CARD 🤑</label><br>
+              <input type="checkbox" id="CRAFT_THIS_CARD" name="CRAFT THIS CARD">
+              <label for="CRAFT_THIS_CARD">CRAFT THIS CARD 🛠</label><br>
+              <input type="checkbox" id="GOES_IN_MY_DECK" name="GOES IN MY DECK">
+              <label for="GOES_IN_MY_DECK">GOES IN MY DECK 🎴</label><br>
+              <input type="checkbox" id="BREW_WITH_IT" name="BREW WITH IT">
+              <label for="BREW_WITH_IT">BREW WITH IT 👨‍🍳</label><br>
+              <input type="checkbox" id="OTHER_1" name="OTHER 1">
+              <label for="OTHER_1">OTHER 1</label><br>
+              <input type="checkbox" id="OTHER_2" name="OTHER 2">
+              <label for="OTHER_2">OTHER 2</label><br>
+              <input type="checkbox" id="OTHER_3" name="OTHER 3">
+              <label for="OTHER_3">OTHER 3</label><br>
+              <label for="rating">Rating:</label>
+              <select name="rating" id="rating">
+                  <option value="">Select rating</option>
+                  {% for num in range(1, 11) %}
+                  <option value="{{num}}">{{num}}</option>
+                  {% endfor %}
+              </select>
+              <input type="submit" value="Submit">
+          </form>
+      </div>
+        <h2>Summary Of Your Session</h2>
+        <div class="table-responsive">
+        <table>
+            <tr>
+                <th>Cardname</th>
+                <th>LOVE THIS CARD</th>
+                <th>LOVE THIS ART</th>
+                <th>INTERESTING CARD</th>
+                <th>BUY THIS CARD</th>
+                <th>CRAFT THIS CARD</th>
+                <th>GOES IN MY DECK</th>
+                <th>BREW WITH IT</th>
+                <th>OTHER 1</th>
+                <th>OTHER 2</th>
+                <th>OTHER 3</th>
+                <th>Rating</th>
+            </tr>
+            {% for card in cards %}
+            <tr>
+                <td>{{ card.name }}</td>
+                <td>{% if "LOVE THIS CARD" in card.labels %}X{% endif %}</td>
+                <td>{% if "LOVE THIS ART" in card.labels %}X{% endif %}</td>
+                <td>{% if "INTERESTING CARD" in card.labels %}X{% endif %}</td>
+                <td>{% if "BUY THIS CARD" in card.labels %}X{% endif %}</td>
+                <td>{% if "CRAFT THIS CARD" in card.labels %}X{% endif %}</td>
+                <td>{% if "GOES IN MY DECK" in card.labels %}X{% endif %}</td>
+                <td>{% if "BREW WITH IT" in card.labels %}X{% endif %}</td>
+                <td>{% if "OTHER 1" in card.labels %}X{% endif %}</td>
+                <td>{% if "OTHER 2" in card.labels %}X{% endif %}</td>
+                <td>{% if "OTHER 3" in card.labels %}X{% endif %}</td>
+                <td>{{ card.rating }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('home') }}" class="btn">HOME</a>
+            <a href="{{ url_for('download_2_csv') }}" class="btn">Download CSV</a>
+            <a href="{{ url_for('download_2_xls') }}" class="btn">Download XLS</a>
+        <form action="{{ url_for('clear_session') }}" method="post">
+            <button type="submit" class="btn">CLEAR SESSION</button>
+        </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+            $('.card-button').hover(function() {
+                $(this).find('img').css({
+                    'transform': 'scale(1.05)',
+                    'transition': 'transform 0.3s'
+                });
+            }, function() {
+                $(this).find('img').css({
+                    'transform': 'scale(1)',
+                    'transition': 'transform 0.3s'
+                });
+            });
+
+            $('.card-name').hover(function() {
+                const cardImage = $(this).data('image');
+                const cardImageElement = $('<img>').attr('src', cardImage).addClass('hover-image');
+                $('body').append(cardImageElement);
+                $('.hover-image').css('left', '60%').fadeIn(200);
+                $(this).css({
+                    'font-weight': 'bold',
+                    'transition': 'font-weight 0.5s',
+                    'font-size': '2em',
+                    'transition': 'font-size 0.5s'
+                });
+            }, function() {
+                $('.hover-image').fadeOut(200, function() {
+                    $(this).remove();
+                });
+                $(this).css({
+                    'font-weight': 'normal',
+                    'transition': 'font-weight 0.5s',
+                    'font-size': '1em',
+                    'transition': 'font-size 0.5s'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -40,6 +40,7 @@ body, .container {
   height: auto;
   border-radius: 50%;
   object-fit: cover;
+  margin-top: 40px;
 }
 
 .card-list {
@@ -78,9 +79,9 @@ body, .container {
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: var(--btn-bg-color);
-  color: #fff;
-  border: none;
+  background-color: transparent;
+  color: #999;
+  border: 1px solid #999;
   border-radius: 4px;
   text-decoration: none;
   font-weight: bold;
@@ -88,7 +89,8 @@ body, .container {
 }
 
 .btn:hover {
-  background-color: var(--hover-bg-color);
+  color: #555;
+  background-color: #999;
 }
 
 .hover-image {
@@ -149,6 +151,7 @@ body, .container {
   max-width: 100%;
   height: auto;
   border-radius: 22px;
+  margin-bottom: 16px;
 }
 
 .video-container {
@@ -156,6 +159,8 @@ body, .container {
   overflow: hidden;
   width: 100%;
   padding-top: 56.25%;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .video-container iframe {
@@ -181,13 +186,20 @@ body, .container {
 h1 {
   color: white;
   animation: glow 8s linear infinite;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 p {
   color: #d3d3d3;
 }
 
-
+.home-logo {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 
 
 @media screen and (max-width: 900px) {
@@ -207,7 +219,7 @@ p {
     font-size: 3em;
   }
   .intro-paragraph {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .btn {
   padding: 15px 30px;  /* increased padding */
@@ -215,6 +227,10 @@ p {
   }
   .likePost {
       font-size: 30px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 5px;
   }
 }
 
@@ -226,7 +242,7 @@ p {
     font-size: 3em;
   }
   .intro-paragraph {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .btn {
   padding: 15px 30px;  /* increased padding */
@@ -234,6 +250,10 @@ p {
   }
   .likePost {
       font-size: 40px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 6px;
   }
 }
 
@@ -245,7 +265,7 @@ p {
     font-size: 4em;
   }
   .intro-paragraph {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .btn {
   padding: 15px 30px;  /* increased padding */
@@ -253,6 +273,10 @@ p {
   }
   .likePost {
       font-size: 50px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 9px;
   }
 }
 
@@ -264,7 +288,7 @@ p {
     font-size: 4em;
   }
   .intro-paragraph {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .btn {
   padding: 15px 30px;  /* increased padding */
@@ -272,6 +296,10 @@ p {
   }
   .likePost {
       font-size: 50px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 12px;
   }
 }
 
@@ -283,7 +311,7 @@ p {
     font-size: 4em;
   }
   .intro-paragraph {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .btn {
   padding: 15px 30px;  /* increased padding */
@@ -291,10 +319,14 @@ p {
   }
   .btn-primary {
   padding: 15px 30px;  /* increased padding */
-  font-size: 70px;     /* increased font size */
+  font-size: 30px;     /* increased font size */
   }
   .likePost {
       font-size: 50px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 12px;
   }
 }
 
@@ -309,11 +341,15 @@ p {
     font-size: 1em;
   }
   .btn {
-  padding: 15px 30px;  /* increased padding */
-  font-size: 30px;     /* increased font size */
+    padding: 10px 20px;  /* increased padding */
+    font-size: 20px;     /* increased font size */
   }
   .likePost {
       font-size: 35px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 12px;
   }
 }
 
@@ -328,11 +364,15 @@ p {
     font-size: 1em;
   }
   .btn {
-  padding: 15px 30px;  /* increased padding */
-  font-size: 30px;     /* increased font size */
+    padding: 10px 20px;  /* increased padding */
+    font-size: 20px;     /* increased font size */
   }
   .likePost {
       font-size: 14px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 12px;
   }
 }
 
@@ -347,11 +387,15 @@ p {
     font-size: 1em;
   }
   .btn {
-  padding: 15px 30px;  /* increased padding */
-  font-size: 30px;     /* increased font size */
+  padding: 10px 20px;  /* increased padding */
+  font-size: 20px;     /* increased font size */
   }
   .likePost {
       font-size: 14px;
+  }
+  .table-responsive th,
+  .table-responsive td {
+    font-size: 12px;
   }
 }
 
@@ -384,4 +428,19 @@ a:visited {
 .likePost:hover {
     color: #555;
     background-color: #999;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-responsive th,
+.table-responsive td {
+  padding: 8px;
+  text-align: center;
 }
