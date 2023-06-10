@@ -1,17 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
-import requests
-import csv
-import pandas as pd
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort, jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
-import os
-from dotenv import load_dotenv
 from io import BytesIO
+import pandas as pd
 import json
 import secrets
-from flask_table import Table, Col
 import markdown2
+import os
+import requests
+from dotenv import load_dotenv
+from flask_table import Table, Col
 
 load_dotenv()
 
@@ -145,6 +144,7 @@ def new_post():
             "image": form.image.data or None,
             "text": markdown2.markdown(form.text.data),
             "video": form.video.data or None,
+            "likes": 0
         }
         with open('blog_posts.json', 'r+') as file:
             blog_posts = json.load(file)
@@ -200,6 +200,33 @@ def edit_post(post_id):
         print(form.errors) # print form errors when the form is not valid
 
     return render_template('edit_post.html', form=form)
+
+
+@app.route('/like/<post_id>', methods=['POST'])
+def like_post(post_id):
+    with open('blog_posts.json', 'r') as file:
+        blog_posts = json.load(file)
+
+    post = next((post for post in blog_posts if post['id'] == post_id), None)
+
+    if post is None:
+        return jsonify({'error': 'post not found'}), 404
+
+    if 'liked_posts' not in session:
+        session['liked_posts'] = []
+
+    if post_id in session['liked_posts']:
+        return jsonify({'error': 'already liked'}), 403
+
+    post['likes'] += 1
+    session['liked_posts'].append(post_id)
+    session.modified = True  # Save the updated session data
+
+    with open('blog_posts.json', 'w') as file:
+        json.dump(blog_posts, file)
+
+    return jsonify({'likes': post['likes']})
+
 
 
 

@@ -11,20 +11,59 @@
         }
 
         .video-container-fullpost {
-            width: 100%;
+            width: 80%;
         }
 
-        p {
+        .full-post-content p {
             text-align: left;
         }
 
-        img {
-            max-height: 400px;
-            width: auto;
-            height: auto;
-            border-radius: 13px;
+        .full-post-content img {
+          max-width: 100%;
+          max-height: 500px;
+          height: auto;
+          border-radius: 22px;
+          margin-bottom: 20px;
+        }
+
+        /* Include styles for the Like button */
+        .like-container {
+            margin-top: 10px;
+        }
+
+        .likePost {
+            background-color: transparent;
+            border: 1px solid #999;
+            border-radius: 4px;
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 12px;
+        }
+
+        .likePost:hover {
+            color: #555;
+            background-color: #999;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        /* Include JavaScript for the Like button */
+        $(document).ready(function(){
+            $('.likePost').click(function(e){
+                e.preventDefault(); // Prevent the default click behavior
+                var button = $(this);
+                var post_id = button.data('id');
+                $.post('/like/' + post_id, function(data){
+                    if(data.error){
+                        alert(data.error);
+                    }else{
+                        button.text('Like (' + data.likes + ')');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container full-post-content">
@@ -36,16 +75,15 @@
         {% endif %}
         {% if post.video %}
             <div class="video-container-fullpost">
-                <iframe
-                    src="{{ post.video }}"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <iframe src="{{ post.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         {% endif %}
         <div class="post-content full-post-content">
-    {{ post.text|safe }}
+            {{ post.text|safe }}
+        </div>
+        <!-- Include HTML for the Like button -->
+        <div class="like-container">
+            <button class="likePost" data-id="{{ post.id }}">Like</button>
         </div>
     </div>
 </body>
