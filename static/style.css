@@ -1,11 +1,11 @@
 :root {
-  --main-bg-color: #333;
+  --main-bg-color: #1A1A1A;
   --main-font: 'Roboto', sans-serif;
   --main-color: #fafafa;
   --light-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
   --hover-bg-color: #0056b3;
   --btn-bg-color: #007bff;
-  --blog-post-bg: #444;
+  --blog-post-bg: #2F2E2E;
 }
 
 body, .container {
@@ -85,7 +85,8 @@ body, .container {
   border-radius: 4px;
   text-decoration: none;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .btn:hover {
@@ -116,7 +117,7 @@ body, .container {
 .blog-post {
   background-color: var(--blog-post-bg);
   padding: 20px;
-  margin: 20px 10px;
+  margin: 12px 12px;
   box-shadow: var(--light-shadow);
   border-radius: 10px;
   width: 100%;
@@ -202,12 +203,12 @@ p {
 }
 
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1050px) {
   .blog-post p {
-    font-size: 75%;
+    font-size: 100%;
   }
   .blog-post h3 {
-    font-size: 150%;
+    font-size: 110%;
   }
 }
 
@@ -249,7 +250,7 @@ p {
   font-size: 30px;     /* increased font size */
   }
   .likePost {
-      font-size: 40px;
+      font-size: 30px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -272,7 +273,7 @@ p {
   font-size: 30px;     /* increased font size */
   }
   .likePost {
-      font-size: 50px;
+      font-size: 30px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -295,7 +296,7 @@ p {
   font-size: 30px;     /* increased font size */
   }
   .likePost {
-      font-size: 50px;
+      font-size: 30px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -322,7 +323,7 @@ p {
   font-size: 30px;     /* increased font size */
   }
   .likePost {
-      font-size: 50px;
+      font-size: 30px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -345,7 +346,7 @@ p {
     font-size: 20px;     /* increased font size */
   }
   .likePost {
-      font-size: 35px;
+      font-size: 20px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -368,7 +369,7 @@ p {
     font-size: 20px;     /* increased font size */
   }
   .likePost {
-      font-size: 14px;
+      font-size: 20px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -391,7 +392,7 @@ p {
   font-size: 20px;     /* increased font size */
   }
   .likePost {
-      font-size: 14px;
+      font-size: 20px;
   }
   .table-responsive th,
   .table-responsive td {
@@ -443,4 +444,12 @@ a:visited {
 .table-responsive td {
   padding: 8px;
   text-align: center;
+}
+
+.intro-paragraph {
+  margin-top: 0px;
+}
+
+.email-logo{
+  font-size: 40px;
 }

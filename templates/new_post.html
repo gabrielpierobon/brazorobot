@@ -26,6 +26,10 @@
                 {{ form.password(class="form-control", placeholder="Enter Password") }}
             </div>
             <div class="form-group">
+                {{ form.author.label(class="form-control-label") }} <!-- New author field -->
+                {{ form.author(class="form-control", placeholder="Enter Author Name") }} <!-- New author field -->
+            </div>
+            <div class="form-group">
                 {{ form.title.label(class="form-control-label") }}
                 {{ form.title(class="form-control", placeholder="Enter Title") }}
             </div>

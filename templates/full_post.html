@@ -5,14 +5,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
     <style>
-        .video-container-fullpost iframe {
+        /* .video-container-fullpost iframe {
             width: 100%;
             height: auto;
         }
 
         .video-container-fullpost {
             width: 80%;
-        }
+        } */
 
         .full-post-content p {
             text-align: left;
@@ -20,10 +20,15 @@
 
         .full-post-content img {
           max-width: 100%;
-          max-height: 500px;
+          /* max-height: 500px; */
+          max-height: 100%;
           height: auto;
           border-radius: 22px;
           margin-bottom: 20px;
+        }
+
+        .post-content {
+            width: 100%;
         }
 
     </style>
@@ -39,7 +44,7 @@
                     if(data.error){
                         alert(data.error);
                     }else{
-                        button.text('Like (' + data.likes + ')');
+                        button.text('💗 (' + data.likes + ')');
                     }
                 });
             });
@@ -49,23 +54,22 @@
 <body>
     <div class="container full-post-content">
         <h1>{{ post.title }}</h1>
-        <p class="date">{{ post.date }} | ID: {{ post.id }} | Likes: {{ post.likes }}</p>
         {% if post.image %}
             <img src="{{ post.image }}" alt="{{ post.title }}">
         {% endif %}
         {% if post.video %}
-            <div class="video-container-fullpost">
+            <div class="video-container">
                 <iframe src="{{ post.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         {% endif %}
         <div class="post-content full-post-content">
+            <p class="date">by {{ post.author }} | {{ post.date }} | ID: {{ post.id }} | Likes: {{ post.likes }}</p>
             {{ post.text|safe }}
         </div>
         <!-- Include HTML for the Like button -->
         <div class="like-container">
-            <button class="likePost" data-id="{{ post.id }}">Like</button>
+            <button class="likePost" data-id="{{ post.id }}">🤍</button>
         </div>
-        <a href="{{ url_for('home') }}" class="btn btn-primary">Home</a>
     </div>
 </body>
 </html>

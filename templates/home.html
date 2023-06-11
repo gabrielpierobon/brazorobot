@@ -15,7 +15,7 @@
                     if(data.error){
                         alert(data.error);
                     }else{
-                        button.text('Like (' + data.likes + ')');
+                        button.text('💗 (' + data.likes + ')');
                     }
                 });
             });
@@ -36,9 +36,8 @@
           <img class="home-logo" src="https://storage.googleapis.com/brazorobot/brazorobot_web/static/discord.png" alt="Brazorobot Logo" width="200">
         </a>
         </div>
-        <p class="intro-paragraph">Want to contact me? Send me an email to <a href="mailto:brazorobotmtg@outlook.com">brazorobotmtg@outlook.com</a></p>
         <div class="text-center">
-        <a href="{{ url_for('labeler') }}" class="btn btn-primary">Random Card Labeler</a>
+        <a href="{{ url_for('labeler') }}" class="btn btn-primary">▶️ Random Card Labeler</a>
         <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">2 Random Card Selector</a> -->
         <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">Corner Rounding Tool</a> -->
         </div>
@@ -47,11 +46,11 @@
                 <div class="blog-post">
                     <a href="{{ url_for('full_post', post_id=post.id) }}">
                         <h3>{{ post.title }}</h3>
-                        <p class="date">{{ post.date }} | ID: {{ post.id }} | Likes: {{ post.likes }}</p>
+                        <p class="date">by {{ post.author }} | {{ post.date }} | ID: {{ post.id }} | Likes: {{ post.likes }}</p>
                         {% if post.image %}
                             <img src="{{ post.image }}" alt="{{ post.title }}">
                         {% endif %}
-                        <p>{{ post.text[:500]|safe }}{% if post.text|length > 500 %}...{% endif %}</p>
+                        <p>{{ post.text[:300]|safe }}{% if post.text|length > 300 %}...{% endif %}</p>
                     </a>
                     {% if post.video %}
                         <div class="video-container">
@@ -64,11 +63,12 @@
                         </div>
                     {% endif %}
                     <div class="like-container">
-                        <button class="likePost" data-id="{{ post.id }}">Like</button>
+                        <button class="likePost" data-id="{{ post.id }}">🤍</button>
                     </div>
                 </div>
             {% endfor %}
         </div>
+          <p class="intro-paragraph email-logo"><a href="mailto:brazorobotmtg@outlook.com">📧</a></p>
     </div>
 </body>
 </html>

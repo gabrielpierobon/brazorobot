@@ -11,6 +11,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from flask_table import Table, Col
+import time
 
 load_dotenv()
 
@@ -21,6 +22,7 @@ valid_password = os.getenv('PASSWORD')
 
 class PostForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
+    author = StringField('Author', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])
     image = StringField('Image')
@@ -29,6 +31,9 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 def request_card_data(url):
+    # Introduce a delay of 50 milliseconds before making the request
+    time.sleep(0.05)
+
     response = requests.get(url)
     if response.status_code == 200:
         card_data = response.json()
@@ -38,7 +43,12 @@ def request_card_data(url):
 
 def get_card_images():
     url = 'https://api.scryfall.com/cards/random'
+
+    # Introduce a delay of 50 milliseconds before making each request
+    time.sleep(0.05)
     card_data_1 = request_card_data(url)
+
+    time.sleep(0.05)
     card_data_2 = request_card_data(url)
 
     if card_data_1 and card_data_2:
@@ -48,6 +58,7 @@ def get_card_images():
         ]
         return card_images_and_names
     return None
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -73,6 +84,9 @@ def game():
         session.pop('card_images', None)
 
     if 'card_images' not in session or not session['card_images']:
+        # Introduce a delay of 50 milliseconds before making the request to get card images
+        time.sleep(0.05)
+
         card_images = get_card_images()
         if card_images is None:
             # Handle the case when card_images is None
@@ -81,10 +95,14 @@ def game():
             return redirect(url_for('home'))
         session['card_images'] = card_images
 
+    # Introduce a delay of 50 milliseconds before rendering the template
+    time.sleep(0.05)
+
     return render_template('game.html',
                            card_images=session.get('card_images', []),
                            selected_images=session.get('selected_images', []),
                            unselected_images=session.get('unselected_images', []))
+
 
 @app.route('/summary')
 def summary():
@@ -153,6 +171,9 @@ def labeler():
             session.pop('card_data', None)
 
     if 'card_data' not in session or not session['card_data']:
+        # Introduce a delay of 50 milliseconds before making the request to get card data
+        time.sleep(0.05)
+
         card_data = request_card_data('https://api.scryfall.com/cards/random')
         if card_data is None:
             return redirect(url_for('home'))
@@ -166,9 +187,13 @@ def labeler():
         }
         session['card_data'] = card_data
 
+    # Introduce a delay of 50 milliseconds before rendering the template
+    time.sleep(0.05)
+
     return render_template('labeler.html',
                            card_data=session.get('card_data', {}),
                            cards=session.get('cards', []))
+
 
 
 @app.route('/download_2/csv', methods=['GET'])
@@ -250,7 +275,8 @@ def new_post():
             "image": form.image.data or None,
             "text": markdown2.markdown(form.text.data),
             "video": form.video.data or None,
-            "likes": 0
+            "likes": 0,
+            "author": form.author.data
         }
         with open('blog_posts.json', 'r+') as file:
             blog_posts = json.load(file)
@@ -285,9 +311,10 @@ def edit_post(post_id):
         # If the form is valid, update the post data
         post['title'] = form.title.data
         post['date'] = form.date.data
-        post['image'] = form.image.data
+        post['image'] = form.image.data or None
         post['text'] = markdown2.markdown(form.text.data)
         post['video'] = form.video.data or None
+        post['author'] = form.author.data
         # Write the updated data back to the file
         with open('blog_posts.json', 'w') as file:
             json.dump(blog_posts, file)
@@ -301,6 +328,7 @@ def edit_post(post_id):
         form.image.data = post['image']
         form.text.data = post['text']
         form.video.data = post['video']
+        form.author.data = post['author']
 
     elif request.method == 'POST':
         print(form.errors) # print form errors when the form is not valid
