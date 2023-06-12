@@ -43,6 +43,17 @@ body, .container {
   margin-top: 40px;
 }
 
+.logo-opening {
+  margin-right: 32px;
+  margin-left: 32px;
+  width: 40%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 40px;
+}
+
 .card-list {
   list-style: none;
   display: flex;

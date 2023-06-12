@@ -25,9 +25,11 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img class="logo-image" src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
+          {% set logo_file = 'magiclogo.jpg' if site == 'magic' else 'ailogo.jpg' %}
+          <img class="logo-image" src="{{ url_for('static', filename=logo_file) }}" alt="Logo">
         </div>
         <h1>BRAZOROBOT LIFE</h1>
+        {% if site == 'magic' %}
         <div class="text-center">
         <a href="https://www.youtube.com/@BrazorobotMTG">
           <img class="home-logo" src="https://storage.googleapis.com/brazorobot/brazorobot_web/static/youtubelogo3.png" alt="Brazorobot Logo" width="200">
@@ -41,6 +43,7 @@
         <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">2 Random Card Selector</a> -->
         <!-- <a href="{{ url_for('game') }}" class="btn btn-primary">Corner Rounding Tool</a> -->
         </div>
+        {% endif %}
         <div class="blog-grid full-post-content">
             {% for post in blog_posts %}
                 <div class="blog-post">

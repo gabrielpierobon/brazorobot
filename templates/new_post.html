@@ -50,6 +50,21 @@
                 {{ form.video(class="form-control", placeholder="Enter Video URL") }}
             </div>
             <div class="form-group">
+                <label class="form-control-label">Site</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="site" id="magic" value="magic">
+                  <label class="form-check-label" for="magic">
+                    Magic
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="site" id="ai" value="ai">
+                  <label class="form-check-label" for="ai">
+                    AI
+                  </label>
+                </div>
+            </div>
+            <div class="form-group">
                 {{ form.submit(class="btn btn-primary") }}
             </div>
             <div>
@@ -94,7 +109,6 @@
       });
     });
     </script>
-
 
 </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brazorobot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.jpg') }}" type="image/jpg">
+</head>
+<body>
+    <div class="container">
+      <h1>BRAZOROBOT LIFE</h1>
+        <div class="logo">
+            <a href="/magic">
+                <img class="logo-opening" src="{{ url_for('static', filename='magiclogo.jpg') }}" alt="Logo">
+            </a>
+            <h2>MAGIC THE GATHERING</h2>
+        </div>
+        <div class="logo">
+            <a href="/ai">
+                <img class="logo-opening" src="{{ url_for('static', filename='ailogo.jpg') }}" alt="Logo">
+            </a>
+            <h2>ARTIFICIAL INTELLIGENCE</h2>
+        </div>
+    </div>
+</body>
+</html>

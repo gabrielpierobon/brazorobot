@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Title</th>
+                <th>Site</th>
                 <th>Date</th>
                 <th>Delete</th>
             </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ item.id }}</td>
                 <td>{{ item.title }}</td>
+                <td>{{ item.site }}</td>
                 <td>{{ item.date }}</td>
                 <td><a href="{{ url_for('edit_post', post_id=item.id) }}">Edit</a></td>
                 <td><a href="{{ url_for('delete_post', post_id=item.id) }}">Delete</a></td>

@@ -32,7 +32,7 @@
           {% endfor %}
         </ul>
         <div class="text-center">
-        <a href="{{ url_for('home') }}" class="btn">HOME</a>
+        <a href="{{ url_for('magic') }}" class="btn">HOME</a>
         <a href="{{ url_for('summary') }}" class="btn btn-primary">SESSION SUMMARY</a>
         <form action="{{ url_for('clear_session') }}" method="post">
             <button type="submit" class="btn">CLEAR SESSION</button>

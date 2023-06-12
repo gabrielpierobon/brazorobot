@@ -23,6 +23,7 @@ valid_password = os.getenv('PASSWORD')
 class PostForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     author = StringField('Author', validators=[DataRequired()])
+    site = StringField('Site', validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])
     image = StringField('Image')
@@ -59,12 +60,26 @@ def get_card_images():
         return card_images_and_names
     return None
 
-
 @app.route('/', methods=['GET'])
-def home():
+def opening():
+    return render_template('opening.html')
+
+@app.route('/magic', methods=['GET'])
+def magic():
     with open('blog_posts.json', 'r') as file:
         blog_posts = json.load(file)
-    return render_template('home.html', blog_posts=list(reversed(blog_posts))[:15])
+        magic_blog_posts = [post for post in blog_posts if post['site'] == 'magic']
+        selected_magic_blog_posts = list(reversed(magic_blog_posts))[:15]
+    return render_template('home.html', blog_posts=selected_magic_blog_posts, site='magic')
+
+@app.route('/ai', methods=['GET'])
+def ai():
+    with open('blog_posts.json', 'r') as file:
+        blog_posts = json.load(file)
+        ai_blog_posts = [post for post in blog_posts if post['site'] == 'ai']
+        selected_ai_blog_posts = list(reversed(ai_blog_posts))[:15]
+    return render_template('home.html', blog_posts=selected_ai_blog_posts, site='ai')
+
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
@@ -92,7 +107,7 @@ def game():
             # Handle the case when card_images is None
             # You can redirect the user to an error page or display a message
             # Here, we redirect the user back to the home page
-            return redirect(url_for('home'))
+            return redirect(url_for('magic'))
         session['card_images'] = card_images
 
     # Introduce a delay of 50 milliseconds before rendering the template
@@ -113,7 +128,7 @@ def summary():
 @app.route('/clear_session', methods=['POST'])
 def clear_session():
     session.clear()
-    return redirect(url_for('home'))
+    return redirect(url_for('magic'))
 
 @app.route('/download/csv', methods=['GET'])
 def download_csv():
@@ -176,7 +191,7 @@ def labeler():
 
         card_data = request_card_data('https://api.scryfall.com/cards/random')
         if card_data is None:
-            return redirect(url_for('home'))
+            return redirect(url_for('magic'))
         card_data = {
             'name': card_data['name'],
             'image': card_data['image_uris']['normal'],
@@ -271,6 +286,7 @@ def new_post():
         new_post = {
             "id": secrets.token_hex(3),
             "title": form.title.data,
+            "site": form.site.data,
             "date": form.date.data,
             "image": form.image.data or None,
             "text": markdown2.markdown(form.text.data),
@@ -284,7 +300,7 @@ def new_post():
             file.seek(0)
             file.truncate()
             json.dump(blog_posts, file)
-        return redirect(url_for('home'))
+        return redirect(url_for(form.site.data))
     return render_template('new_post.html', form=form)
 
 @app.route('/preview', methods=['POST'])
@@ -310,6 +326,7 @@ def edit_post(post_id):
             abort(401)
         # If the form is valid, update the post data
         post['title'] = form.title.data
+        post['site'] = form.site.data
         post['date'] = form.date.data
         post['image'] = form.image.data or None
         post['text'] = markdown2.markdown(form.text.data)
@@ -318,12 +335,13 @@ def edit_post(post_id):
         # Write the updated data back to the file
         with open('blog_posts.json', 'w') as file:
             json.dump(blog_posts, file)
-        return redirect(url_for('home'))
+        return redirect(url_for(form.site.data))
 
     if request.method == 'GET':
         # If the method is GET, populate the form with the current post data
         form.password.data = valid_password
         form.title.data = post['title']
+        form.site.data = post['site']
         form.date.data = post['date']
         form.image.data = post['image']
         form.text.data = post['text']
@@ -387,9 +405,10 @@ class ItemTable(Table):
 
 # Get some objects
 class Item(object):
-    def __init__(self, id, title, date):
+    def __init__(self, id, title, site, date):
         self.id = id
         self.title = title
+        self.site = site
         self.date = date
 
 def get_items():
@@ -399,8 +418,9 @@ def get_items():
     for entry in data:
         id = entry["id"]
         title = entry["title"]
+        site = entry["site"]
         date = entry["date"]
-        items.append(Item(id, title, date))
+        items.append(Item(id, title, site, date))
     return items
 
 @app.route('/posts', methods=['GET'])
