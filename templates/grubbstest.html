@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Grubbs Test</title>
+    <link href="{{ url_for('static', filename='styles_grubbstest.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Grubbs Test</h1>
+
+    <form method="POST">
+      <label for="data">Enter comma separated numbers:</label><br>
+      <input type="text" id="data" name="data"><br>
+      <input type="submit" value="Submit">
+    </form>
+
+    {% if outliers %}
+      <h2>Results:</h2>
+      <p>Data: {{ data }}</p>
+      <p>Outliers: {{ outliers }}</p>
+      <p>Indices: {{ outliers_indices }}</p>
+    {% endif %}
+  </body>
+</html>

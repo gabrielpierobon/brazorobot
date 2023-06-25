@@ -12,6 +12,7 @@ import requests
 from dotenv import load_dotenv
 from flask_table import Table, Col
 import time
+from brazorobot.grubbstest import grubbstest_bp
 
 load_dotenv()
 
@@ -19,6 +20,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['WTF_CSRF_SECRET_KEY'] = os.getenv('WTF_CSRF_SECRET_KEY')
 valid_password = os.getenv('PASSWORD')
+
+# Register all blueprints
+app.register_blueprint(grubbstest_bp, url_prefix='/grubbstest')
 
 class PostForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
