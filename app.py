@@ -12,7 +12,12 @@ import requests
 from dotenv import load_dotenv
 from flask_table import Table, Col
 import time
-from brazorobot.grubbstest import grubbstest_bp
+
+try:
+    from grubbstest import grubbstest_bp
+except:
+    from .grubbstest import grubbstest_bp
+
 
 load_dotenv()
 
