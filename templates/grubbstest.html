@@ -1,22 +1,116 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Grubbs Test</title>
     <link href="{{ url_for('static', filename='styles_grubbstest.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <h1>Grubbs Test</h1>
 
     <form method="POST">
       <label for="data">Enter comma separated numbers:</label><br>
-      <input type="text" id="data" name="data"><br>
+      <input type="text" id="data" name="data" placeholder="eg: 10, 11, 9, 12, 13, 2, 9, 13, 100, 12, 15, 14"><br>
       <input type="submit" value="Submit">
     </form>
 
-    {% if outliers %}
+    {% if data %}
       <h2>Results:</h2>
       <p>Data: {{ data }}</p>
+      {% if outliers %}
       <p>Outliers: {{ outliers }}</p>
       <p>Indices: {{ outliers_indices }}</p>
+      {% endif %}
+      <p>First Z-Scores: {{ first_z_scores }}</p>
+
+      <div style="max-width: 1200px; height: 700px; margin: 0 auto;">
+        <canvas id="dataChart"></canvas>
+      </div>
+
+      <script>
+      const chartData = {
+        datasets: [
+          {
+            label: 'Data',
+            data: {{ data_for_chart|tojson }},
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            pointRadius: 5,
+            pointHoverRadius: 7,
+          },
+          {% if outliers %}
+          {
+            label: 'Outlier',
+            data: {{ outliers_for_chart|tojson }},
+            backgroundColor: 'rgba(255, 0, 0, 0.5)', // brighter red
+            borderColor: 'rgba(255, 0, 0, 1)', // brighter red
+            pointRadius: 5,
+            pointHoverRadius: 7,
+          },
+          {% endif %}
+        ],
+      };
+
+
+        var ctx = document.getElementById('dataChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'scatter',
+          data: chartData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                beginAtZero: true,
+                title: { display: true, text: 'Index' },
+              },
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Value' },
+              },
+            },
+          },
+        });
+      </script>
+
+      <div style="max-width: 1200px; height: 700px; margin: 0 auto;">
+        <canvas id="distributionChart"></canvas>
+      </div>
+
+      <script>
+        const distributionData = {
+          labels: {{ distribution_data|map(attribute='0')|list|tojson }},
+          datasets: [
+            {
+              label: 'Distribution',
+              data: {{ distribution_data|map(attribute='1')|list|tojson }},
+              backgroundColor: 'rgba(0, 123, 255, 0.5)',
+              borderColor: 'rgba(0, 123, 255, 1)',
+              borderWidth: 1
+            },
+          ]
+        };
+
+        var ctx2 = document.getElementById('distributionChart').getContext('2d');
+        new Chart(ctx2, {
+          type: 'bar',
+          data: distributionData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                beginAtZero: true,
+                title: { display: true, text: 'Value' },
+              },
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Frequency' },
+              },
+            },
+          },
+        });
+      </script>
     {% endif %}
   </body>
 </html>

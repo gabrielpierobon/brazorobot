@@ -1,6 +1,7 @@
 from .grubbstest import grubbstest_bp
 from flask import Flask, render_template, request, redirect, url_for
 import numpy as np
+import pandas as pd
 import copy
 from scipy.stats import t # add this line
 
@@ -31,34 +32,62 @@ def grubbs_test(data, alpha=0.05):
     return False, None
 
 def run_grubbs_test(data):
-  outliers = []
-  outliers_indices = []
-  data_copy = copy.deepcopy(data)
-  while True:
-    is_outlier, ind = grubbs_test(data_copy)
-    if is_outlier:
-      outliers.append(data_copy[ind])
-      outliers_indices.append(np.where(data == data_copy[ind])[0][0])
-      data_copy = np.delete(data_copy, ind)
-    else:
-      break
-  return outliers, outliers_indices
+    outliers = []
+    outliers_indices = []
+    data_copy = copy.deepcopy(data)
+    z_scores = (data_copy - np.mean(data_copy)) / np.std(data_copy)  # calculate z-scores
+    z_scores_list = [round(z, 2) for z in z_scores.tolist()]  # convert to list and round to 2 decimals
+    initial_data_indices = list(range(len(data)))  # Record the initial indices
+
+    while True:
+        is_outlier, ind = grubbs_test(data_copy)
+        if is_outlier:
+            outliers.append(data_copy[ind])
+            outliers_indices.append(initial_data_indices.pop(ind))
+            data_copy = np.delete(data_copy, ind)
+        else:
+            break
+
+    print(outliers)
+    print(outliers_indices)
+    return outliers, outliers_indices, z_scores_list, initial_data_indices
+
+def get_frequency_data(data):
+    df = pd.DataFrame(data, columns=['Data'])
+    frequency_data = df['Data'].value_counts().sort_index().reset_index().values.tolist()
+    return frequency_data
 
 @grubbstest_bp.route('/', methods=['GET', 'POST'])
 def grubbstest():
-  data = None
-  outliers = None
-  outliers_indices = None
+    data = None
+    outliers = None
+    outliers_indices = None
+    data_for_chart = None
+    outliers_for_chart = None
+    z_scores = None
+    distribution_data = None
 
-  if request.method == 'POST':
-    # Get data from form
-    data = request.form.get('data')
-    # Convert data to numpy array
-    data = np.fromstring(data, sep=',')
-    # Run Grubbs' test
-    outliers, outliers_indices = run_grubbs_test(data)
+    if request.method == 'POST':
+        # Get data from form
+        data_str = request.form.get('data')
+        if data_str:  # only process if data_str is not empty
+            # Convert data to numpy array
+            data = np.fromstring(data_str, sep=',')
+            # Run Grubbs' test
+            outliers, outliers_indices, z_scores, data_indices = run_grubbs_test(data)
 
-  return render_template('grubbstest.html',
-                         data=list(data) if data is not None else None,
-                         outliers=outliers,
-                         outliers_indices=outliers_indices)
+            # Prepare data for Chart.js
+            data_for_chart = [{'x': int(i), 'y': float(y)} for i, y in zip(data_indices, data[data_indices])]
+            outliers_for_chart = [{'x': int(i), 'y': float(y)} for i, y in zip(outliers_indices, outliers)]
+            print(outliers_for_chart)
+
+            distribution_data = get_frequency_data(data)
+
+    return render_template('grubbstest.html',
+                           data=list(data) if data is not None else None,
+                           outliers=outliers,
+                           outliers_indices=outliers_indices,
+                           data_for_chart=data_for_chart,
+                           outliers_for_chart=outliers_for_chart,
+                           first_z_scores=z_scores,
+                           distribution_data=distribution_data)
